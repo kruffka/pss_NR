@@ -30,7 +30,7 @@ void main() {
 
     // ...
 
-    FILE *file = fopen("input/rxdata30720000.pcm", "r");
+    FILE *file = fopen("input/rxdata238272.pcm", "r");
     if (file == NULL) {
         printf("error opening file\n");
         exit(0);

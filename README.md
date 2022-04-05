@@ -1,8 +1,10 @@
 # pss_NR
 pss search from OAI 5G NR
 
-To build:
+fftw3 lib required
+
+# build:
 $ make 
 
-run: 
+# run: 
 $ ./pss
