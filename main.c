@@ -1,4 +1,4 @@
-#include "defs.h"
+#include "pss_nr.h"
 
 void main() {
 
@@ -8,7 +8,6 @@ void main() {
     int n_frames = 2;
     int is;
 
-    //
     PHY_VARS_NR_UE *ue = (PHY_VARS_NR_UE *)malloc(sizeof(PHY_VARS_NR_UE));
 
     // rxdata
@@ -20,8 +19,11 @@ void main() {
 
     ue->frame_parms.nb_antennas_rx = nb_rx;
     ue->frame_parms.samples_per_frame = frame;
+    ue->frame_parms.ofdm_symbol_size = 2048;
     ue->common_vars.gNb_id = 0;
-    
+
+    init_context_pss_nr(&ue->frame_parms); // init_context_synchro_nr
+
 
     // ...
      
@@ -37,6 +39,8 @@ void main() {
 
     // ...
 
+
+    // free_context_pss_nr();
     for(int i = 0; i < nb_rx; i++){
         free(ue->common_vars.rxdata[i]);
     }

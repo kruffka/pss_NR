@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 #define NO_RATE_CHANGE (1)
+
+
+#define  NUMBER_PSS_SEQUENCE          (3)
 
 typedef struct {
 
@@ -23,11 +28,17 @@ typedef struct NR_DL_FRAME_PARMS NR_DL_FRAME_PARMS;
 
 struct NR_DL_FRAME_PARMS {
 
-/// Number of samples in a radio frame
-  uint32_t samples_per_frame;
+    /// Number of samples in a radio frame
+    uint32_t samples_per_frame;
 
-  /// Number of Receive antennas in node
-  uint8_t nb_antennas_rx;
+    /// subcarrier spacing (15,30,60,120)
+    uint32_t subcarrier_spacing;
+
+    /// Number of Receive antennas in node
+    uint8_t nb_antennas_rx;
+
+    /// Size of FFT
+    uint16_t ofdm_symbol_size;
 };
 
 /// Top-level PHY Data Structure for UE
@@ -44,6 +55,5 @@ typedef struct {
     // ...
 
 } PHY_VARS_NR_UE;
-
 
 

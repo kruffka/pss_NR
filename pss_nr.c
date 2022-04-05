@@ -1,4 +1,113 @@
-#include "defs.h"
+#include "pss_nr.h"
+#include "tools.h"
+
+/*******************************************************************
+*
+* NAME :         init_context_pss_nr
+*
+* PARAMETERS :   structure NR_DL_FRAME_PARMS give frame parameters
+*
+* RETURN :       generate binary pss sequences (this is a m-sequence)
+*
+* DESCRIPTION :  3GPP TS 38.211 7.4.2.2 Primary synchronisation signal
+*                Sequence generation
+*
+*********************************************************************/
+
+void init_context_pss_nr(NR_DL_FRAME_PARMS *frame_parms_ue)
+{
+  int ofdm_symbol_size = frame_parms_ue->ofdm_symbol_size;
+  int sizePss = LENGTH_PSS_NR * IQ_SIZE;  /* complex value i & q signed 16 bits */
+  int size = ofdm_symbol_size * IQ_SIZE; /* i and q samples signed 16 bits */
+  int16_t *p = NULL;
+  int64_t *q = NULL;
+
+  AssertFatal(ofdm_symbol_size > 127, "illegal ofdm_symbol_size %d\n",ofdm_symbol_size);
+  for (int i = 0; i < NUMBER_PSS_SEQUENCE; i++) {
+
+    p = malloc16(sizePss); /* pss in complex with alternatively i then q */
+    if (p != NULL) {
+      primary_synchro_nr[i] = p;
+      bzero( primary_synchro_nr[i], sizePss);
+    }
+//     else {
+//       printf("Fatal memory allocation problem \n");
+//       exit(0); // assert(0);
+//     }
+//     p = malloc(LENGTH_PSS_NR*2);
+//     if (p != NULL) {
+//       primary_synchro_nr2[i] = p;
+//       bzero( primary_synchro_nr2[i],LENGTH_PSS_NR*2);
+//     }
+//     p = malloc16(size);
+//     if (p != NULL) {
+//       primary_synchro_time_nr[i] = p;
+//       bzero( primary_synchro_time_nr[i], size);
+//     }
+//     else {
+//       printf("Fatal memory allocation problem \n");
+//      exit(0); // assert(0);
+//     }
+
+//     size = sizeof(int64_t)*(frame_parms_ue->samples_per_frame + (2*ofdm_symbol_size));
+//     q = (int64_t*)malloc16(size);
+//     if (q != NULL) {
+//       pss_corr_ue[i] = q;
+//       bzero( pss_corr_ue[i], size);
+//     }
+//     else {
+//       printf("Fatal memory allocation problem \n");
+//       exit(0); // assert(0);;
+//     }
+
+//     // generate_pss_nr(frame_parms_ue,i);
+  }
+}
+
+/*******************************************************************
+*
+* NAME :         free_context_pss_nr
+*
+* PARAMETERS :   none
+*
+* RETURN :       none
+*
+* DESCRIPTION :  free context related to pss
+*
+*********************************************************************/
+
+void free_context_pss_nr(void)
+{
+  for (int i = 0; i < NUMBER_PSS_SEQUENCE; i++) {
+
+    if (primary_synchro_time_nr[i] != NULL) {
+      free(primary_synchro_time_nr[i]);
+      primary_synchro_time_nr[i] = NULL;
+    }
+    else {
+      printf("Fatal memory deallocation problem \n");
+      exit(0); // assert(0);
+    }
+
+    if (primary_synchro_nr[i] != NULL) {
+      free(primary_synchro_nr[i]);
+      primary_synchro_nr[i] = NULL;
+    }
+    else {
+      printf("Fatal memory deallocation problem \n");
+      exit(0); // assert(0);
+    }
+
+    if (pss_corr_ue[i] != NULL) {
+      free(pss_corr_ue[i]);
+      pss_corr_ue[i] = NULL;
+    }
+    else {
+      printf("Fatal memory deallocation problem \n");
+      exit(0); // assert(0);
+    }
+  }
+}
 
 
 /*******************************************************************
@@ -177,11 +286,11 @@ static inline double angle64(int64_t x)
 #define DOT_PRODUCT_SCALING_SHIFT    (17)
 
 int pss_search_time_nr(int **rxdata, ///rx data in time domain
-                       NR_DL_FRAME_PARMS *frame_parms,
-		       int fo_flag,
-                       int is,
-                       int *eNB_id,
-		       int *f_off)
+                        NR_DL_FRAME_PARMS *frame_parms,
+                        int fo_flag,
+                        int is,
+                        int *eNB_id,
+		                int *f_off)
 {
   unsigned int n, ar, peak_position, pss_source;
   int64_t peak_value;
@@ -303,7 +412,7 @@ int pss_search_time_nr(int **rxdata, ///rx data in time domain
 
   *eNB_id = pss_source;
 
-  LOG_I(PHY,"[UE] nr_synchro_time: Sync source = %d, Peak found at pos %d, val = %llu (%d dB) avg %d dB, ffo %lf\n", pss_source, peak_position, (unsigned long long)peak_value, dB_fixed64(peak_value),dB_fixed64(avg[pss_source]),ffo_est);
+  printf("[UE] nr_synchro_time: Sync source = %d, Peak found at pos %d, val = %llu (%d dB) avg %d dB, ffo %lf\n", pss_source, peak_position, (unsigned long long)peak_value, dB_fixed64(peak_value),dB_fixed64(avg[pss_source]),ffo_est);
 
   if (peak_value < 5*avg[pss_source])
     return(-1);

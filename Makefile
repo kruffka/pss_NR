@@ -1,10 +1,12 @@
 .PHONY: clean
 
-all: main.o
-	gcc -o pss main.o
+SOURCE = main.c pss_nr.c tools.c cdot_prod.c
+FLAGS = -lm
 
-main.o:
-	gcc -c main.c
+all: pss
+
+pss: $(SOURCE)
+	gcc $(SOURCE) $(FLAGS) -o pss
 
 clean:
 	rm -rf *.o pss
