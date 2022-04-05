@@ -245,11 +245,12 @@ void generate_pss_nr(NR_DL_FRAME_PARMS *fp,int N_ID_2)
 //        1);                 /* scaling factor */
 
 
-    printf("idft length = %d\n", length);
-    // idft_fftw3((int16_t)get_idft(length),
-  	//    synchroF_tmp,          /* complex input */
-    //    synchro_tmp,           /* complex output */
-    //    1);                 /* scaling factor */
+    printf("idft length = %d %d\n", length, (int16_t)get_idft(length));
+    printf(">>>> idft from fftw3 here\n");
+    idft(length,
+  	   synchroF_tmp,          /* complex input */
+       synchro_tmp,           /* complex output */
+       1);                 /* scaling factor */
 
 
   /* then get final pss in time */

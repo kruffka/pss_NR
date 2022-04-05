@@ -1,5 +1,6 @@
 #include "defs.h"
 
+// from ss_pbch_nr.h
 
 /* PSS parameters */
 #define  NUMBER_PSS_SEQUENCE          (3)
@@ -11,9 +12,21 @@
 #define  PSS_IFFT_SIZE                (256)
 
 #define  PSS_SC_START_NR              (52)     /* see from TS 38.211 table 7.4.3.1-1: Resources within an SS/PBCH block for PSS... */
-
-
 #define  IQ_SIZE                      (sizeof(int16_t) * 2)        /* I and Q are alternatively stored into buffers */
+
+//
+
+
+// from structures.h
+
+#define Maxneighbor NUMBER_OF_UE_MAX
+	#ifndef NB_ANTENNAS_RX
+		#define NB_ANTENNAS_RX  4
+	#endif
+
+//
+
+
 
 #define DEFINE_VARIABLES_PSS_NR_H
 // #define INIT_VARIABLES_PSS_NR_H
@@ -25,10 +38,7 @@
 #define EXTERN  extern
 #endif
 
-#define Maxneighbor NUMBER_OF_UE_MAX
-	#ifndef NB_ANTENNAS_RX
-		#define NB_ANTENNAS_RX  4
-	#endif
+
 
 #define SYNCHRO_FFT_SIZE_MAX           (8192)                       /* maximum size of fft for synchronisation */
 #define SYNC_TMP_SIZE                  (NB_ANTENNAS_RX*SYNCHRO_FFT_SIZE_MAX*IQ_SIZE) /* to be aligned with existing lte synchro */
@@ -83,3 +93,6 @@ int pss_search_time_nr(int **rxdata, ///rx data in time domain
                        int is,
                        int *eNB_id,
 		               int *f_off);
+
+// fftw3
+int idft(int length, int16_t *txdataF, int16_t *txdata, int scaling);

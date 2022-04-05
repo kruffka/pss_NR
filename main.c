@@ -16,18 +16,29 @@ void main() {
         ue->common_vars.rxdata[i] = (int32_t *)malloc((frame*2+2048) * sizeof(int32_t));
     }
 
-
     ue->frame_parms.nb_antennas_rx = nb_rx;
     ue->frame_parms.samples_per_frame = frame;
     ue->frame_parms.subcarrier_spacing = 15000;
-    ue->frame_parms.first_carrier_offset = 0;
-    ue->frame_parms.ssb_start_subcarrier = 0;
+    ue->frame_parms.first_carrier_offset = 1412;
+    ue->frame_parms.ssb_start_subcarrier = 516;
     ue->frame_parms.ofdm_symbol_size = 2048;
     ue->common_vars.gNb_id = 0;
     
 
     init_context_synchro_nr(&ue->frame_parms); // init_context_synchro_nr
 
+
+    // ...
+
+    FILE *file = fopen("input/rxdata30720000.pcm", "r");
+    if (file == NULL) {
+        printf("error opening file\n");
+        exit(0);
+    }
+
+    fread(&ue->common_vars.rxdata[0][0], 307200*2*sizeof(int32_t), 1, file);
+
+    fclose(file);
 
     // ...
      
