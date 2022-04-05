@@ -19,10 +19,14 @@ void main() {
 
     ue->frame_parms.nb_antennas_rx = nb_rx;
     ue->frame_parms.samples_per_frame = frame;
+    ue->frame_parms.subcarrier_spacing = 15000;
+    ue->frame_parms.first_carrier_offset = 0;
+    ue->frame_parms.ssb_start_subcarrier = 0;
     ue->frame_parms.ofdm_symbol_size = 2048;
     ue->common_vars.gNb_id = 0;
+    
 
-    init_context_pss_nr(&ue->frame_parms); // init_context_synchro_nr
+    init_context_synchro_nr(&ue->frame_parms); // init_context_synchro_nr
 
 
     // ...
@@ -40,7 +44,7 @@ void main() {
     // ...
 
 
-    // free_context_pss_nr();
+    free_context_synchro_nr();
     for(int i = 0; i < nb_rx; i++){
         free(ue->common_vars.rxdata[i]);
     }

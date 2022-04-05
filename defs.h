@@ -39,6 +39,12 @@ struct NR_DL_FRAME_PARMS {
 
     /// Size of FFT
     uint16_t ofdm_symbol_size;
+
+    /// Carrier offset in FFT buffer for first RE in PRB0
+    uint16_t first_carrier_offset;
+
+    /// Start in Subcarrier index of the SSB block
+    uint16_t ssb_start_subcarrier;
 };
 
 /// Top-level PHY Data Structure for UE
