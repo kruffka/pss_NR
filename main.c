@@ -20,11 +20,11 @@ void main() {
 
     ue->frame_parms.nb_antennas_rx = nb_rx;
     ue->frame_parms.samples_per_frame = frame;
-
+    ue->common_vars.gNb_id = 0;
     
 
     // ...
-    
+     
     // initial sync performed on two successive frames, if pbch passes on first frame, no need to process second frame 
     // only one frame is used for symulation tools
     for(is=0; is<n_frames;is++) {

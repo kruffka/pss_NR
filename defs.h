@@ -12,6 +12,11 @@ typedef struct {
   /// - second index: sample [0..2*FRAME_LENGTH_COMPLEX_SAMPLES+2048[
   int32_t **rxdata;
 
+  /// estimated frequency offset (in radians) for all subcarriers
+  int32_t freq_offset;
+  /// gNb_id user is synched to
+  int32_t gNb_id;
+
 } NR_UE_COMMON;
 
 typedef struct NR_DL_FRAME_PARMS NR_DL_FRAME_PARMS;
@@ -42,4 +47,3 @@ typedef struct {
 
 
 
-int pss_synchro_nr(PHY_VARS_NR_UE *PHY_vars_UE, int is, int rate_change);
